@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf8>
+<meta name=viewport content=width=device-width,initial-scale=1>
+<title>Shelter</title>
+<link rel=stylesheet href=/index.css>
+<main>
+    <a href="./src"></a>
+    <h1>Shelter</h1>
+    <form action="/" method="post">
+        <label for="name">Name</label>
+        <input required name="name" type="text">
+        <label for="type">Type</label>
+        <select required name="type"> 
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="rabbit">Rabit</option>
+        </select>
+        <label for="place">Animal Shelter</label>
+        <select name="place" required>
+            <option value="Brooklyn Animal Care Center">Brooklyn Animal Care Center</option>
+            <option value="Manhattan Animal Care Center">Manhattan Animal Care Center</option>
+            <option value="Staten Island Animal Care Center">Staten Island Animal Care Center</option>
+        </select>
+        <label for="description">Description</label>
+        <textarea name="description" cols="20"></textarea>
+        <fieldset>
+            <legend>Sex*</legend>
+            <label>Female</label>
+            <input type="radio" name="sex" value="female" required>
+            <label>Male</label>
+            <input type="radio" name="sex" value="male" required>
+        </fieldset>
+        <label for="age">Age</label>
+        <input required name="age" type="number">
+        <fieldset>
+            <legend>Vaccinated*</legend>
+            <label>Yes</label>
+            <input type="radio" name="vaccinated" value="1" required>
+            <label>No</label>
+            <input type="radio" name="vaccinated" value="0" required>
+        </fieldset>
+        <fieldset>
+            <legend>Coat</legend>
+            <label>Smooth</label>
+            <input type="radio" name="coat" value="smooth">
+            <label>Thick</label>
+            <input type="radio" name="coat" value="thick">
+        </fieldset>
+        <fieldset>
+            <legend>Declawed</legend>
+            <label>Yes</label>
+            <input type="radio" name="declawed" value="1">
+            <label>No</label>
+            <input type="radio" name="declawed" value="0">
+        </fieldset>
+        <label for="primaryColor">Primary Color</label>
+        <input required name="primaryColor" type="text">
+        <label for="secondaryColor">Secondary Color</label>
+        <input name="secondaryColor" type="text">
+        <label for="weight">Weight</label>
+        <input required name="weight" type="text">
+        <fieldset>
+            <legend>Size</legend>
+            <label>Small</label>
+            <input type="radio" name="size" value="small">
+            <label>Medium</label>
+            <input type="radio" name="size" value="medium">
+            <label>Large</label>
+            <input type="radio" name="size" value="large">
+        </fieldset>
+        <fieldset>
+            <legend>Length</legend>
+            <label>Short</label>
+            <input type="radio" name="length" value="short">
+            <label>Medium</label>
+            <input type="radio" name="length" value="medium">
+            <label>Long</label>
+            <input type="radio" name="length" value="long">
+        </fieldset>
+        <label for="intake">Intake</label>
+        <input required name="intake" type="date">
+        <input type="submit" value="Upload">
+
+
+    </form>
+
+</main>
+<script src=/index.js></script>
+<!--
+
+<select>
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="opel">Opel</option>
+  <option value="audi">Audi</option>
+</select>
+
+"id": "89238",
+    "name": "Frodo",
+    "type": "cat",
+    "place": "Manhattan Animal Care Center",
+    "description": null,
+    "sex": "male",
+    "age": 1,
+    "vaccinated": true,
+    "declawed": false,
+    "primaryColor": "black",
+    "secondaryColor": null,
+    "weight": 3.15,
+    "intake": "2017-10-13"-->
