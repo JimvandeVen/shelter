@@ -64,6 +64,7 @@ function get(req, res) {
             json: () => res.json(result),
             html: () => res.render('error.ejs', Object.assign({}, result, helpers))
         })
+        return
 
     }
 
