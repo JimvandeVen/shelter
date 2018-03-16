@@ -3,7 +3,22 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var db = require('../db')
+var multer = require('multer')
 var helpers = require('./helpers')
+var mysql = require('mysql')
+
+
+require('dotenv').config()
+
+var connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+})
+
+connection.connect()
+console.log(connection)
 
 module.exports = express()
     .set('view engine', 'ejs')
@@ -25,20 +40,17 @@ module.exports = express()
     .delete('/:id', remove)
     .listen(1902)
 
-function all(req, res) {
-    var result = {
-        errors: [],
-        data: db.all()
+function all(req, res, next) {
+  connection.query('SELECT * FROM movies', done)
+
+  function done(err, data) {
+    if (err) {
+      next(err)
+    } else {
+      res.render('list.ejs', {data: data})
     }
-
-    /* Use the following to support just HTML:  */
-    /* Support both a request for JSON and a request for HTML  */
-    res.format({
-        json: () => res.json(result),
-        html: () => res.render('list.ejs', Object.assign({}, result, helpers))
-    })
+  }
 }
-
 function get(req, res) {
     var id = req.params.id
     var has
@@ -246,3 +258,4 @@ function add(req, res) {
 
     }
 }
+
