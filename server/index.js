@@ -54,30 +54,6 @@ function all(req, res, next) {
     }
 }
 
-//function get(req, res, next) {
-//  var slug = req.params.slug
-//  connection.query(`SELECT * FROM animals ${joins('animals')} WHERE animals.slug = '${slug}'`, done)
-//
-//  function done(err, data) {
-//    if (err) {
-//      console.error(err)
-//      if (err.code == 'ER_PARSE_ERROR') {
-//        onerror([400], res)
-//      }
-//    } else if (!data.length) {
-//      onerror([404], res)
-//    } else {
-//      var result = {
-//        data: data[0]
-//      }
-//      res.format({
-//        json: () => res.json(result),
-//        html: () => res.render('detail.ejs', Object.assign({}, result, helpers))
-//      })
-//    }
-//  }
-//}
-
 function get(req, res, next) {
     var id = req.params.id
     var badRequest = isNaN(id)
@@ -89,7 +65,7 @@ function get(req, res, next) {
         if (err) {
             console.error(err)
 
-        } else if (badRequest) {
+        } else if (id.length != 5 || badRequest) {
             result = {
                 errors: [
                     {
@@ -102,7 +78,7 @@ function get(req, res, next) {
             }
             res.render('error.ejs', Object.assign({}, result, helpers))
             return
-        } else if (id.length != 5 || data.length === 0) {
+        } else if (data.length === 0) {
             // 404 not found
             result = {
                 errors: [
@@ -129,81 +105,6 @@ function get(req, res, next) {
     }
 }
 
-
-
-//function get(req, res) {
-//    var id = req.params.id
-//    var has
-//    var result = {
-//        errors: [],
-//        data: undefined
-//    }
-//    try {
-//        has = db.has(id)
-//    } catch (err) {
-//        // 400 invalid id
-//        result = {
-//            errors: [
-//                {
-//                    id: 400,
-//                    title: 'Bad Request',
-//                    description: 'Bad Request',
-//                    detail: 'detail'
-//                }
-//        ]
-//        }
-//        res.format({
-//            json: () => res.json(result),
-//            html: () => res.render('error.ejs', Object.assign({}, result, helpers))
-//        })
-//        return
-//
-//    }
-//
-//    if (has) {
-//        result.data = db.get(id)
-//        // 200 ok
-//        res.format({
-//            json: () => res.json(result),
-//            html: () => res.render('detail.ejs', Object.assign({}, result, helpers))
-//        })
-//
-//    } else if (db.removed(id)) {
-//        result = {
-//            errors: [
-//                {
-//                    id: 410,
-//                    title: 'Gone',
-//                    description: 'This animal was removed',
-//                    detail: 'detail'
-//                }
-//        ]
-//        }
-//        res.format({
-//            json: () => res.json(result),
-//            html: () => res.render('error.ejs', Object.assign({}, result, helpers))
-//        })
-//
-//    } else {
-//        // 404 not found
-//        result = {
-//            errors: [
-//                {
-//                    id: 404,
-//                    title: 'Page Not Found',
-//                    description: 'This animal does not exist',
-//                    detail: 'detail'
-//                }
-//        ]
-//        }
-//        res.format({
-//            json: () => res.json(result),
-//            html: () => res.render('error.ejs', Object.assign({}, result, helpers))
-//        })
-//
-//    }
-//}
-
 function upload(req, res) {
     res.render('upload.html')
 }
@@ -211,10 +112,12 @@ function upload(req, res) {
 
 function remove(req, res) {
     var id = req.params.id
-    var has
-    var result = {
-        errors: [],
-        data: undefined
+    connection.query('DELETE FROM animals WHERE id = ?', id, done)
+
+    function done(err) {
+        if (err) {
+            console.error(err)
+        }
     }
     try {
         has = db.has(id)
@@ -310,34 +213,21 @@ function add(req, res) {
 
     function done(err, data) {
         if (err) {
-            next(err)
+            result = {
+                errors: [
+                    {
+                        id: 422,
+                        title: 'Uprocessable Entity',
+                        description: 'Uprocessable Entity',
+                        detail: 'detail'
+                                }
+                        ]
+            }
+            res.render('error.ejs', Object.assign({}, result, helpers))
         } else {
             console.log(err)
             res.redirect('/' + data.insertId)
         }
-        //        try {
-        //            var newAnimal = db.add(addAnimal)
-        //            res.redirect('/' + data.insertId)
-        //            console.log('added')
-        //        } catch (err) {
-        //            result = {
-        //                errors: [
-        //                    {
-        //                        id: 422,
-        //                        title: 'Uprocessable Entity',
-        //                        description: 'Uprocessable Entity',
-        //                        detail: 'detail'
-        //                }
-        //        ]
-        //            }
-        //            res.format({
-        //                json: () => res.json(result),
-        //                html: () => res.render('error.ejs', Object.assign({}, result, helpers))
-        //            })
-        //
-        //
-        //
-        //        }
     }
 }
 
