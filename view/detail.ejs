@@ -16,7 +16,7 @@
       <img src="/image/<%= data.id %>.jpg" alt>
     </div>
     <figcaption>
-      <p><%= description(data) %></p>
+      <p><%= data.description %></p>
     </figcaption>
   </figure>
   <dl class=capitalize>
@@ -34,9 +34,9 @@
     <% } else if (value == false) { %>
       <dd>No</dd>
     <% } else if (key == 'weight') { %>
-      <dd><%= value %> <%= plural('kilogram', value) %></dd>
+      <dd><%= value %> <%= ('kilogram', value) %></dd>
     <% } else if (key == 'age') { %>
-      <dd><%= value %> <%= plural('year', value) %></dd>
+      <dd><%= value %> <%= ('year', value) %></dd>
     <% } else if (key == 'intake') { %>
       <dd>
         <time datetime="<%= value %>"><%= value %></time>

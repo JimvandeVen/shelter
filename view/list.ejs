@@ -15,11 +15,11 @@
         <figure class="frame-image frame-image-reveal">
           <img src="/image/<%= entity.id %>.jpg" alt>
           <figcaption>
-            <p><%= description(entity) %></p>
+            <p><%= entity.description %></p>
           </figcaption>
         </figure>
         <h2><%= entity.name %></h2>
-        <p class=capitalize><%= entity.sex %> · <%= entity.age %> <%= plural('year', entity.age) %> old</p>
+        <p class=capitalize><%= entity.sex %> · <%= entity.age %> <%= 'year', entity.age %> old <%= entity.type %></p>
       </a>
     </article>
     <% }) %>
