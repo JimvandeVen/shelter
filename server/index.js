@@ -82,27 +82,25 @@ function get(req, res, next) {
     var id = req.params.id
     var badRequest = isNaN(id)
     console.log(badRequest)
+
     connection.query('SELECT * FROM animals WHERE id = ?', id, done)
 
     function done(err, data) {
         if (err) {
             console.error(err)
-            if (!badRequest) {
-                result = {
-                    errors: [
-                        {
-                            id: 400,
-                            title: 'Bad Request',
-                            description: 'Bad Request',
-                            detail: 'detail'
+
+        } else if (badRequest) {
+            result = {
+                errors: [
+                    {
+                        id: 400,
+                        title: 'Bad Request',
+                        description: 'Bad Request',
+                        detail: 'detail'
                 }
         ]
-                }
-                res.format({
-                    json: () => res.json(result),
-                    html: () => res.render('error.ejs', Object.assign({}, result, helpers))
-                })
             }
+            res.render('error.ejs', Object.assign({}, result, helpers))
             return
         } else if (id.length != 5 || data.length === 0) {
             // 404 not found
@@ -125,13 +123,12 @@ function get(req, res, next) {
             var result = {
                 data: data[0]
             }
-            res.format({
-                json: () => res.json(result),
-                html: () => res.render('detail.ejs', Object.assign({}, result, helpers))
-            })
+            res.render('detail.ejs', Object.assign({}, result, helpers))
+
         }
     }
 }
+
 
 
 //function get(req, res) {
@@ -279,7 +276,9 @@ function remove(req, res) {
 }
 
 function add(req, res) {
-    connection.query('INSERT INTO animals SET ?', {
+    var input
+
+    connection.query('INSERT INTO animals SET ?', input = {
         name: req.body.name,
         type: req.body.type,
         place: req.body.place,
@@ -297,21 +296,25 @@ function add(req, res) {
         date: req.body.intake
     }, done)
 
-    if (addAnimal.type === 'dog' || addAnimal.type === 'rabbit') {
-        addAnimal.declawed = undefined
-    } else if (addAnimal.type === 'cat' || addAnimal.type != undefined) {
-        addAnimal.declawed = 'true'
+    if (input.type === 'dog' || input.type === 'rabbit') {
+        input.declawed = undefined
+    } else if (input.type === 'cat' || input.type != undefined) {
+        input.declawed = 'true'
     } else {
-        addAnimal.declawed = undefined
+        input.declawed = undefined
     }
 
-    if (addAnimal.secondaryColor === '' || addAnimal.secondaryColor === undefined) {
-        addAnimal.secondaryColor = undefined
+    if (input.secondaryColor === '' || input.secondaryColor === undefined) {
+        input.secondaryColor = undefined
     }
 
     function done(err, data) {
-        console.log(err)
-        res.redirect('/' + data.insertId)
+        if (err) {
+            next(err)
+        } else {
+            console.log(err)
+            res.redirect('/' + data.insertId)
+        }
         //        try {
         //            var newAnimal = db.add(addAnimal)
         //            res.redirect('/' + data.insertId)
